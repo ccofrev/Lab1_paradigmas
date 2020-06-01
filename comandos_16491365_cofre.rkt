@@ -1,5 +1,7 @@
 #lang racket
 
+(provide (all-defined-out))
+
 ; compara dos listas y devuelve una lista de pares indicando las lineas y el contenido de la primera lista en ese indice
 ; la idea es usar string-split para ingresar un tipo "archivo"
 

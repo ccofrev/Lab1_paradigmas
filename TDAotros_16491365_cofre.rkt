@@ -1,5 +1,7 @@
 #lang racket
 
+(provide (all-defined-out))
+
 ;TDAs
 
 ;TDA archivo
@@ -30,10 +32,10 @@
                                    )))
 
 ; Ejemplos de uso
-(define ar1 (archivo "ar1" "esto\nes\nun\nperro\nde texto\naunque parezca"))
-(define ar2 (archivo "ar2" "esto\n es\nun\narchivo\nde texto\naunque no lo parezca"))
-(define ar3 (archivo "ar3" "esto\nes\nun\narchivo \naunque no lo parezca"))
-(define ar4 (archivo "ar4" "esto\npedro plancha\narchivo\nholi"))
+;(define ar1 (archivo "ar1" "esto\nes\nun\nperro\nde texto\naunque parezca"))
+;(define ar2 (archivo "ar2" "esto\n es\nun\narchivo\nde texto\naunque no lo parezca"))
+;(define ar3 (archivo "ar3" "esto\nes\nun\narchivo \naunque no lo parezca"))
+;(define ar4 (archivo "ar4" "esto\npedro plancha\narchivo\nholi"))
 
 
 
@@ -95,4 +97,24 @@
 (search "carpeta1" Dirs)
 (search "carpeta2" Dirs)
 (search "carpeta3" Dirs)
+
+
+
+; TDA Cambio
+(define cambio (lambda(Archivo modificaciones)(
+                                       if (and (archivo? Archivo) (list? modificaciones) (andmap pair? modificaciones))
+                                          (cons Archivo modificaciones)
+                                          null
+                                       )))
+
+(define getArchivoCambio(lambda(Cambio)(
+                                car Cambio
+                                )))
+
+(define getModsCambio(lambda(Cambio)(
+                                     cdr Cambio
+                                     )))
+
+;(define cam1 (cambio ar1 (list(compara-archivos ar1 ar2))))
+;(define cam2 (cambio ar2 (list(compara-archivos ar4 ar2))))
 
