@@ -1,6 +1,10 @@
 #lang racket
 
 (provide (all-defined-out))
+;(require "TDAindex_16491365_cofre.rkt")
+;(require "TDAotros_16491365_cofre.rkt")
+
+
 
 ; compara dos listas y devuelve una lista de pares indicando las lineas y el contenido de la primera lista en ese indice
 ; la idea es usar string-split para ingresar un tipo "archivo"
@@ -27,10 +31,34 @@
 ; compara tipos archivo, dividiendolos como listas de lineas e indicando las lineas diferentes y el contenido
 (define compara-archivos(lambda(archivo1 archivo2)(
                                                   if (and (archivo? archivo1) (archivo? archivo2))
-                                                     (comparador (string-split (getcContenidoArchivo archivo1) "\n") (string-split (getContenidoArchivo archivo2) "\n"))
+                                                     (comparador (string-split (getContenidoArchivo archivo1) "\n") (string-split (getContenidoArchivo archivo2) "\n"))
                                                      null
                                                   )))
 
+
+
+; cambia el parametro en posicion 'n' (partiendo de indice 0) del 'campo' por el valor 'nuevo'
+(define cambia_n (lambda(campo n nuevo)
+                 (define cambia_n_ (lambda(campo n nuevo m )(
+                                                     if (null? campo)
+                                                        null
+                                                        (if (equal? n m)
+                                                            (cons nuevo (cdr campo))
+                                                            (cons (car campo) (cambia_n_ (cdr campo) n nuevo (+ 1 m)))
+                                                            )
+                                                        ) ))
+                 (cambia_n_ campo n nuevo 0 )
+                 ))
+
+; cambia
+(define camb (lambda(lista cambi)(
+                              ;string-split (getContenidoArchivo (getArchivoCambio cambi)) "\n"
+                              if (null? cambi)
+                                 lista
+                                 (camb (cambia_n lista (car (car cambi)) (cdr (car cambi))) (cdr cambi))
+                                 ;(camb lista (cdr cambi))
+                                     
+                        )))
 
 (define cambiadef (lambda(Cambio)(
                                   string-join (camb (string-split (getContenidoArchivo (getArchivoCambio Cambio)) "\n") (getModsCambio Cambio)) "\n"
@@ -54,3 +82,9 @@
 (define git(lambda(comando)(
                             lambda(objetivo)(comando objetivo)
                      )))
+
+
+;Funcion pull
+(define pull(lambda(zonas)(
+                           
+                           )))
