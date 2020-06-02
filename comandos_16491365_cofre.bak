@@ -1,8 +1,8 @@
 #lang racket
 
 (provide (all-defined-out))
-(require "TDAzonas_16491365_cofre.rkt")
-
+;(require "TDAindex_16491365_cofre.rkt")
+;(require "TDAotros_16491365_cofre.rkt")
 
 
 
@@ -66,28 +66,25 @@
 
 
 
+; TDA commit
+; constructor (también comando git)
+; Se incluye autor timestamp mensaje y cambios, el timestamp se extrae automaticamente como segundos
+; los cambios se representan como una lista de lista de listas, cada una de las listas contenidas inicia con el nombre
+; del archivo afectado seguido de pares de lineas y nuevo contenido con el que se reemplaza el contenido anterior.
+(define commit(lambda(autor mensaje cambios)(
+                                             if (and (string? autor) (string? mensaje) (list? cambios) (andmap list? cambios))
+                                                (list autor (current-seconds) mensaje cambios)
+                                                null
+                        )))
+
+
 ; Funcion GIT
 (define git(lambda(comando)(
                             lambda(objetivo)(comando objetivo)
                      )))
 
 
-;Funcion pull auxiliar
-(define pull_(lambda(ws ar)(
-                            if (null? ws)
-                                 null
-                                 (if (equal? ar (search (getNombreArchivo ar) ws))
-                                     (compara-archivos ar (search (getNombreArchivo ar) (getElementosDirectorio ws)))
-                                     null
-                                     )
-                           )))
-(define pull_c(lambda(ws)(
-                          lambda(ar)(
-                                     pull_ ws ar
-                                     )
-                          )))
-
-; Funcion pull
-(define pull(lambda(ws rr)(
-                           map (pull_c ws) (getElementosDirectorio (car rr))
+;Funcion pull
+(define pull(lambda(zonas)(
+                           
                            )))

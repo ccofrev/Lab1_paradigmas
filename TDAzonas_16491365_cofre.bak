@@ -5,17 +5,17 @@
 
 
 ;Repositorio Local
-;Caso especial de directorio
+;Caso especial de directorio con commits
 ;DOM: str lista lista
-;REC: par directrio
-(define workspace(lambda(nombre contenidos)(
-                                                                if  (not (null? (directorio nombre contenidos))) 
-                                                                    (directorio nombre contenidos)
+;REC: par directrio, lista(commits)
+(define workspace(lambda(nombre contenidos listaCommits)(
+                                                                if (and (not (null? (directorio nombre contenidos))) (list? listaCommits) (andmap commit? listaCommits))
+                                                                    (cons (directorio nombre contenidos) listaCommits)
                                                                     null
                                                            )))
 ; Pertenencia
 (define workspace?(lambda(Workspace)(
-                                           not null? (workspace (car Workspace) (car (cdr Workspace)) )
+                                           not null? (workspace (car Workspace) (car (cdr Workspace)) (car (cdr (cdr Workspace))))
                                            )))
 
 
@@ -113,16 +113,21 @@
 ;(define ar3 (archivo "ar3" "esto\nes\nun\narchivo \naunque no lo parezca"))
 ;(define ar4 (archivo "ar4" "esto\npedro plancha\narchivo\nholi"))
 
+;(require "TDAindex_16491365_cofre.rkt")
+;(require "TDAcommit_16491365_cofre.rkt")
+;(require "TDAotros_16491365_cofre.rkt")
 
 
 
+;Repositorio Local
+;Caso especial de directorio con commits
+;DOM: str lista lista
+;REC: par directrio, lista(commits)
 
-
-
-
-
-
-
+; Pertenencia
+;(define LocalRepository?(lambda(LocalRepo)(
+;                                           not null? (LocalRepository (car LocalRepo) (car (cdr LocalRepo)) (car (cdr (cdr LocalRepo))))
+;                                           )))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; AUXILIARES
@@ -151,21 +156,18 @@
                                      (andmap (lambda(x)(or (archivo? x) (and (pair? x) (list? (cdr x)))) (getElementosDirectorio Directorio))
                                      ))))
 
-;desc: retorna un archivo a partir de su nombre
+;desc: retorna un directorio a partir de su nombre
 ;dom: String X Directorio
-;rec: archivo
+;rec: Directorio
 ;t. recursión: cola
-(define search (lambda (nombreArchivo Directorio)(
-                                                  define search_ (lambda (nombreArchivo ElementosDirectorio)
-                                                                    (if (null? ElementosDirectorio)
-                                                                        null
-                                                                        (if (equal? nombreArchivo (getNombreArchivo (car (ElementosDirectorio))))
-                                                                            (car (ElementosDirectorio))
-                                                                            (search_ nombreArchivo (cdr ElementosDirectorio))
-                                                                            )
-                                                                        )))
-                 (search_ nombreArchivo (getElementosDirectorio Directorio))
-                 ))
+(define search (lambda (nombreDir Directorio)
+     (if (null? Directorio)
+         null
+         (if (equal? nombreDir (getNombreDirectorio (car Directorio)))
+             (car Directorio)
+             (search nombreDir (cdr Directorio))
+             )
+         )))
 
 
 ; Ejemplos de uso
@@ -215,6 +217,3 @@
                                                               (list Workspace Index LocalRepo RemoteRepo)
                                                               null
                                                               )))
-
-
-

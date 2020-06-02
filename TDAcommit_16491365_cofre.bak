@@ -11,10 +11,10 @@
 ; del archivo afectado seguido de pares de lineas y nuevo contenido con el que se reemplaza el contenido anterior.
 (define commit(lambda(autor mensaje cambios)(
                                              if (and (string? autor) (string? mensaje) (list? cambios) (andmap list? cambios))
-                                                (list (current-seconds) autor mensaje cambios)
+                                                (list autor (current-seconds) mensaje cambios)
                                                 null
                         )))
 
 (define commit? (lambda(commit)(
-                                and (list? commit) (number? (car commit)) (string? (car (cdr commit))) (string? (car (cdr (cdr commit)))) (list? (car (cdr (cdr (cdr commit)))))
+                                and (list? commit) (string? (car commit)) (string? (car (car commit))) (list? (car (car (car commit))))
                                 )))
